@@ -3,5 +3,6 @@
 cd iers/files
 bash update.sh
 cd -
-date_s=`date +%Y-%m-%d` 
-tar -zcvf "iers-${date_s}.tar.gz" iers
+fname="iers-$(date +%Y-%m-%d).tar.gz"
+tar -zcvf $fname iers
+echo "File ${fname} generated."
