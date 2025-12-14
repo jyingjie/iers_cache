@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 # https://github.com/astropy/astropy/blob/v5.0.x/astropy/utils/iers/data/update_builtin_iers.sh
 # iers.IERS_B_URL
 wget http://hpiers.obspm.fr/iers/eop/eopc04/eopc04_IAU2000.62-now -O eopc04_IAU2000.62-now
