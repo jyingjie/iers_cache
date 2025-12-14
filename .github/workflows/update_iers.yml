@@ -1,0 +1,35 @@
+name: Auto Update IERS Data
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Every Sunday at 00:00 UTC
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Run update script
+      run: |
+        bash update_pack.sh
+
+    - name: Get filename
+      id: get_filename
+      run: |
+        FILE=$(ls iers-*.tar.gz)
+        echo "filename=$FILE" >> $GITHUB_OUTPUT
+
+    - name: Upload to Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: latest
+        name: Latest Weekly IERS Data
+        body: "Automatic weekly build of IERS data cache for offline usage. \n\nContains: `eopc04`, `Leap_Second.dat`, `finals2000A.all`."
+        files: ${{ steps.get_filename.outputs.filename }}
+        draft: false
+        prerelease: false
